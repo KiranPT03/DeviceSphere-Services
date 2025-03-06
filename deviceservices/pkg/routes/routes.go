@@ -11,11 +11,15 @@ import (
 func Init(app *fiber.App, config *config.Config) {
 	v1 := app.Group("/api/:version/device-service", middleware.Versioning())
 	{
-		userController := devices.NewDeviceController(config)
-		v1.Get("/devices", userController.GetAllDevices)
-		v1.Get("/devices/:id", userController.GetDeviceByID)
-		v1.Post("/devices", userController.CreateDevice)
-		v1.Put("/devices/:id", userController.UpdateDevice)
-		v1.Delete("/devices/:id", userController.DeleteDevice)
+		deviceController := devices.NewDeviceController(config)
+		deviceDiscoveryController := devices.NewDeviceDiscoveryController(config)
+		v1.Get("/devices", deviceController.GetAllDevices)
+		v1.Get("/devices/:id", deviceController.GetDeviceByID)
+		v1.Post("/devices", deviceController.CreateDevice)
+		v1.Put("/devices/:id", deviceController.UpdateDevice)
+		v1.Delete("/devices/:id", deviceController.DeleteDevice)
+		// Properties
+		v1.Get("/devices/:id/properties", deviceController.GetAllPropertiesByDeviceID)
+		v1.Get("/device-discovery/kepware/devices", deviceDiscoveryController.GetKepwareDeviceData)
 	}
 }

@@ -14,11 +14,13 @@ type Condition struct {
 
 // Rule represents a rule
 type Rule struct {
-	ID         string      `json:"id"`
-	Name       string      `json:"name"`
-	Severity   string      `json:"severity"`
-	Status     string      `json:"status"`
-	CreatedAt  string      `json:"createdAt"`
-	UpdatedAt  string      `json:"updatedAt"`
-	Conditions []Condition `json:"condition"`
+	ID          string      `json:"id"`
+	Name        string      `json:"name"`
+	Severity    string      `json:"severity"`
+	Status      string      `json:"status"`
+	Type        string      `json:"type"`
+	Description string      `json:"description"`
+	CreatedAt   string      `json:"createdAt"`
+	UpdatedAt   string      `json:"updatedAt"`
+	Conditions  []Condition `json:"condition"`
 }

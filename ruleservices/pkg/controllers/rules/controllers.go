@@ -62,6 +62,8 @@ func (rc *RuleController) getRuleData(ruleId string) (models.Rule, error) {
 		rule.Name = result[0]["name"].(string)
 		rule.Severity = result[0]["severity"].(string)
 		rule.Status = result[0]["status"].(string)
+		rule.Description = result[0]["description"].(string)
+		rule.Type = result[0]["type"].(string)
 		rule.CreatedAt = result[0]["created_at"].(string)
 		rule.UpdatedAt = result[0]["updated_at"].(string)
 
@@ -157,6 +159,8 @@ func (rc *RuleController) CreateRule(c *fiber.Ctx) error {
 	ruleMap["name"] = rule.Name
 	ruleMap["severity"] = rule.Severity
 	ruleMap["status"] = rule.Status
+	ruleMap["description"] = rule.Description
+	ruleMap["type"] = rule.Type
 	ruleMap["created_at"] = rule.CreatedAt
 	ruleMap["updated_at"] = rule.UpdatedAt
 	ruleId, ruleErr := rc.repository.Create("rules", ruleMap)
@@ -192,6 +196,8 @@ func (rc *RuleController) CreateRule(c *fiber.Ctx) error {
 	newRule.Name = ruleMap["name"].(string)
 	newRule.Severity = ruleMap["severity"].(string)
 	newRule.Status = ruleMap["status"].(string)
+	newRule.Description = ruleMap["description"].(string)
+	newRule.Type = ruleMap["type"].(string)
 	newRule.CreatedAt = ruleMap["created_at"].(string)
 	newRule.UpdatedAt = ruleMap["updated_at"].(string)
 
