@@ -6,7 +6,9 @@ type Condition struct {
 	Position       string `json:"position"`
 	Type           string `json:"type"`
 	DeviceId       string `json:"deviceId,omitempty"`
+	DeviceName     string `json:"deviceName,omitempty"`
 	PropertyId     string `json:"propertyId,omitempty"`
+	PropertyName   string `json:"propertyName,omitempty"`
 	OperatorId     string `json:"operatorId,omitempty"`
 	OperatorSymbol string `json:"operatorSymbol,omitempty"`
 	Value          string `json:"value,omitempty"`

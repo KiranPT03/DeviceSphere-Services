@@ -39,7 +39,9 @@ func (rc *RuleController) getRuleData(ruleId string) (models.Rule, error) {
 					c.position,
 					c.type,
 					c.device_id,
+					c.device_name,
 					c.property_id,
+					c.property_name,
 					c.operator_id,
 					c.operator_symbol,
 					c.value
@@ -73,7 +75,9 @@ func (rc *RuleController) getRuleData(ruleId string) (models.Rule, error) {
 				Position:       condMap["position"].(string),
 				Type:           condMap["type"].(string),
 				DeviceId:       condMap["device_id"].(string),
+				DeviceName:     condMap["device_name"].(string),
 				PropertyId:     condMap["property_id"].(string),
+				PropertyName:  	condMap["property_name"].(string),
 				OperatorId:     condMap["operator_id"].(string),
 				OperatorSymbol: condMap["operator_symbol"].(string),
 				Value:          condMap["value"].(string),
@@ -110,7 +114,7 @@ func (rc *RuleController) GetAllRules(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(ruleList)
+	return resterrors.SendOK(c,ruleList)
 }
 
 func (rc *RuleController) GetRuleByID(c *fiber.Ctx) error {
@@ -173,7 +177,9 @@ func (rc *RuleController) CreateRule(c *fiber.Ctx) error {
 		conditionMap["position"] = condition.Position
 		conditionMap["type"] = condition.Type
 		conditionMap["device_id"] = condition.DeviceId
+		conditionMap["device_name"] = condition.DeviceName
 		conditionMap["property_id"] = condition.PropertyId
+		conditionMap["property_name"] = condition.PropertyName
 		conditionMap["operator_id"] = condition.OperatorId
 		conditionMap["operator_symbol"] = condition.OperatorSymbol
 		conditionMap["value"] = condition.Value
@@ -210,7 +216,9 @@ func (rc *RuleController) CreateRule(c *fiber.Ctx) error {
 			Position:       condition["position"].(string),
 			Type:           condition["type"].(string),
 			DeviceId:       condition["device_id"].(string),
+			DeviceName:    	condition["device_name"].(string),
 			PropertyId:     condition["property_id"].(string),
+			PropertyName:  	condition["property_name"].(string),
 			OperatorId:     condition["operator_id"].(string),
 			OperatorSymbol: condition["operator_symbol"].(string),
 			Value:          condition["value"].(string),

@@ -8,6 +8,7 @@ logger:
 
 database:
   host: localhost
+  # host: postgres-service.device-sphere-infra.svc.cluster.local
   port: 5432
   user: user_device_sphere
   password: p@ssw0rd@deviceSphere
