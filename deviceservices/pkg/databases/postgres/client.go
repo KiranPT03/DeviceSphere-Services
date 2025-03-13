@@ -22,20 +22,58 @@ func NewPostgreSQLRepository(config *config.Config) (*PostgreSQLRepository, erro
 	// Create a connection string
 	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		config.Database.Host, config.Database.Port, config.Database.User, config.Database.Password, config.Database.Dbname)
-
 	// Connect to the database
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
 	}
-
 	// Ping the database to verify the connection
 	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
-
 	log.Debug("Connected to the database!")
+	// Table creation queries
+	deviceTableQuery := `
+                CREATE TABLE IF NOT EXISTS devices (
+                        id VARCHAR(255) PRIMARY KEY,
+                        reference_id VARCHAR(255) NOT NULL,
+                        type VARCHAR(255),
+                        device_name VARCHAR(255),
+                        created_at VARCHAR(255),
+                        state VARCHAR(255) NOT NULL,
+                        location VARCHAR(255),
+                        status VARCHAR(255) NOT NULL,
+                        customer VARCHAR(255),
+                        site VARCHAR(255)
+                );
+        `
+	propertiesTableQuery := `
+                CREATE TABLE IF NOT EXISTS properties (
+                        id VARCHAR(255) PRIMARY KEY,
+                        reference_id VARCHAR(255) NOT NULL,
+                        name VARCHAR(255) NOT NULL,
+                        unit VARCHAR(255),
+                        state VARCHAR(255) NOT NULL,
+                        status VARCHAR(255) NOT NULL,
+                        data_type VARCHAR(255),
+                        value VARCHAR(255),
+                        threshold VARCHAR(255) NOT NULL,
+                        device_id VARCHAR(255) NOT NULL,
+                        FOREIGN KEY (device_id) REFERENCES devices(id)
+                );
+        `
+
+	// Create tables if they don't exist
+	_, err = db.Exec(deviceTableQuery)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create devices table: %w", err)
+	}
+
+	_, err = db.Exec(propertiesTableQuery)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create properties table: %w", err)
+	}
 
 	return &PostgreSQLRepository{db: db}, nil
 }

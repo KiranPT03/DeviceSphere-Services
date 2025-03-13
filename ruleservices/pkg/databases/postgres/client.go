@@ -22,20 +22,58 @@ func NewPostgreSQLRepository(config *config.Config) (*PostgreSQLRepository, erro
 	// Create a connection string
 	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		config.Database.Host, config.Database.Port, config.Database.User, config.Database.Password, config.Database.Dbname)
-
 	// Connect to the database
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
 	}
-
 	// Ping the database to verify the connection
 	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
-
 	log.Debug("Connected to the database!")
+
+	// Table creation queries
+	rulesTableQuery := `
+                CREATE TABLE IF NOT EXISTS rules (
+                        id VARCHAR(255) PRIMARY KEY,
+                        name VARCHAR(255) NOT NULL,
+                        severity VARCHAR(255) NOT NULL,
+                        status VARCHAR(255) NOT NULL,
+                        type VARCHAR(255) NOT NULL,
+                        description TEXT NOT NULL,
+                        created_at VARCHAR(255) NOT NULL,
+                        updated_at VARCHAR(255) NOT NULL
+                );
+        `
+	conditionsTableQuery := `
+                CREATE TABLE IF NOT EXISTS conditions (
+                        id VARCHAR(255) PRIMARY KEY,
+                        rule_id VARCHAR(255) NOT NULL,
+                        position VARCHAR(255) NOT NULL,
+                        type VARCHAR(255) NOT NULL,
+                        device_id VARCHAR(255),
+                        device_name VARCHAR(255),
+                        property_id VARCHAR(255),
+                        property_name VARCHAR(255),
+                        operator_id VARCHAR(255),
+                        operator_symbol VARCHAR(255),
+                        value VARCHAR(255),
+                        FOREIGN KEY (rule_id) REFERENCES rules(id)
+                );
+        `
+
+	// Create tables if they don't exist
+	_, err = db.Exec(rulesTableQuery)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create rules table: %w", err)
+	}
+
+	_, err = db.Exec(conditionsTableQuery)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create conditions table: %w", err)
+	}
 
 	return &PostgreSQLRepository{db: db}, nil
 }
