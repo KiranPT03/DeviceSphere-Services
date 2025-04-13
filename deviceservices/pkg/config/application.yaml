@@ -8,7 +8,8 @@ logger:
 
 database:
   # host: postgres
-  host: "13.200.253.161"
+  # host: "13.200.253.161"
+  host: 192.168.1.6
   # host: postgres-service.device-sphere-infra.svc.cluster.local
   port: 5432
   user: user_device_sphere

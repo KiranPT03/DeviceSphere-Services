@@ -7,7 +7,7 @@ logger:
   filepath: ./deviceservice.log
 
 database:
-  host: "13.200.253.161"
+  host: 192.168.1.6
   # host: localhost
   # host: postgres-service.device-sphere-infra.svc.cluster.local
   port: 5432
